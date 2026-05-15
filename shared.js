@@ -473,10 +473,6 @@ function resetAllGame() {
   localStorage.removeItem('shopActive');
   localStorage.removeItem('shopLevels');
   localStorage.removeItem('endingTriggered');
-  localStorage.removeItem('flushCount');
-  localStorage.removeItem('bestFlush');
-  localStorage.removeItem('bestCombo');
-  localStorage.removeItem('gpuScoreVal');
   endingTriggered = false;
   const toilet = document.getElementById('toilet');
   const hint = document.querySelector('.tap-hint');
