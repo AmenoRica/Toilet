@@ -16,7 +16,7 @@ let weaponCooldown = 0;
 const WEAPON_COOLDOWN_MAX = 120;
 const WEAPON_RANGE = TILE * 1.5;
 const WEAPON_STUN_DURATION = 150;
-let gpuLives = 3, gpuLevelNum = 1, gpuScoreVal = 0, gpuRunning = false;
+let gpuLives = 3, gpuLevelNum = 1, gpuScoreVal = parseInt(localStorage.getItem('gpuScoreVal')) || 0, gpuRunning = false;
 let guards = [], gpuItems = [], professorTarget = null, walls = new Set();
 let keysDown = {};
 let gpuAnimId = null;
@@ -314,6 +314,7 @@ function updateGpuGame() {
       gpuPlayer.gpuCount = 0;
       gpuScoreVal += gpuLevelNum * 100;
       gpuScoreEl.textContent = gpuScoreVal;
+      localStorage.setItem('gpuScoreVal', gpuScoreVal);
       let gpuDlpcReward = (5 + gpuLevelNum * 3) * delivered;
       if (shopItems.find(i => i.id === 'dlpc_booster').owned) gpuDlpcReward *= 2;
       addDlpc(gpuDlpcReward, delivered + '개 GPU 레벨' + gpuLevelNum + ' 배달!');
@@ -415,6 +416,7 @@ document.addEventListener('keyup', (e) => { keysDown[e.code] = false; });
 buildWalls('simple');
 initGpuLevel();
 drawGpuGame();
+gpuScoreEl.textContent = gpuScoreVal;
 
 if (typeof applyLoadedEffects === 'function') applyLoadedEffects();
 

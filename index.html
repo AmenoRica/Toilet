@@ -38,6 +38,11 @@
     </div>
   </div>
   <div class="tap-hint">변기를 클릭하세요!</div>
+  <div class="grad-school" id="gradSchool" style="display:none">
+    <div class="grad-building">🏛️</div>
+    <div class="grad-label">국민대학교 대학원</div>
+    <div class="grad-sub">클릭하면 엔딩 다시 보기</div>
+  </div>
   <div class="combo-display" id="comboDisplay" style="display:none"></div>
   <div class="message" id="message"></div>
   <div class="combo-bar-container" style="display:none"><div class="combo-bar" id="comboBar"></div></div>
@@ -100,6 +105,35 @@
     <div class="shop-scroll">
       <div class="shop-tabs" id="shopTabs"></div>
       <div class="shop-grid" id="shopGrid"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="endingModal">
+  <div class="ending-modal">
+    <div class="ending-scene">
+      <div class="ending-toilet">🚽💥</div>
+      <div class="ending-sparkles">
+        <span class="ending-sparkle" style="top:10%;left:15%;animation-delay:0s">✨</span>
+        <span class="ending-sparkle" style="top:20%;left:75%;animation-delay:0.3s">✨</span>
+        <span class="ending-sparkle" style="top:5%;left:50%;animation-delay:0.6s">🎓</span>
+        <span class="ending-sparkle" style="top:30%;left:30%;animation-delay:0.9s">💛</span>
+        <span class="ending-sparkle" style="top:15%;left:65%;animation-delay:1.2s">✨</span>
+      </div>
+      <h2 class="ending-title">🎓 엔딩: 교수님의 은총</h2>
+      <div class="ending-text">
+        <p>1000 DLPC 토큰을 모으고...</p>
+        <p>드디어 <span id="endingProfName">소융대</span> 교수님의 은총과 사랑을 깨달았다!</p>
+        <p class="ending-highlight">"너희가 이 변기를 견디었다면,<br>대학원의 학문도 견딜 수 있을 것이다."</p>
+        <p>변기를 박살 내고, 교수님의 추천서를 받아<br><strong>🎓 국민대학교 대학원</strong>에 진학했다!</p>
+        <p class="ending-sub">🚽→🌋 변기는 박살났고, 새로운 학문의 길이 열렸다.</p>
+      </div>
+      <div class="ending-stats">
+        <span>내린 횟수: <span id="endingScore">0</span></span>
+        <span>최고 콤보: <span id="endingCombo">0</span></span>
+        <span>DGPU 배달: <span id="endingGpuScore">0</span></span>
+      </div>
+      <button class="ending-btn" id="endingContinueBtn">계속 플레이하기</button>
     </div>
   </div>
 </div>

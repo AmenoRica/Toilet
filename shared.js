@@ -1,4 +1,5 @@
 let dlpcTokens = parseInt(localStorage.getItem('dlpcTokens')) || 0;
+let endingTriggered = localStorage.getItem('endingTriggered') === 'true';
 
 const dlpcAmount = document.getElementById('dlpcAmount');
 const dlpcGainEl = document.getElementById('dlpcGain');
@@ -19,12 +20,46 @@ function addDlpc(amount, label) {
   const gpuDlpcEl = document.getElementById('gpuDlpc');
   if (gpuDlpcEl) gpuDlpcEl.textContent = dlpcTokens;
   localStorage.setItem('dlpcTokens', dlpcTokens);
+  checkEnding();
+}
+
+function checkEnding() {
+  if (dlpcTokens >= 1000 && !endingTriggered) {
+    endingTriggered = true;
+    localStorage.setItem('endingTriggered', 'true');
+    showEnding();
+  }
+}
+
+function showEnding() {
+  const modal = document.getElementById('endingModal');
+  document.getElementById('endingProfName').textContent = typeof currentName !== 'undefined' ? currentName : '소융대';
+  if (typeof score !== 'undefined') document.getElementById('endingScore').textContent = score;
+  if (typeof bestCombo !== 'undefined') document.getElementById('endingCombo').textContent = bestCombo;
+  if (typeof gpuScoreVal !== 'undefined') document.getElementById('endingGpuScore').textContent = gpuScoreVal;
+  modal.classList.add('show');
+}
+
+function enterPostEnding() {
+  const toilet = document.getElementById('toilet');
+  const hint = document.querySelector('.tap-hint');
+  const gradSchool = document.getElementById('gradSchool');
+  if (toilet) toilet.style.display = 'none';
+  if (hint) hint.style.display = 'none';
+  if (gradSchool) {
+    gradSchool.style.display = 'flex';
+    gradSchool.classList.add('ending-burst');
+  }
+  const titleEl = document.getElementById('titleName');
+  if (titleEl) titleEl.textContent = (typeof currentName !== 'undefined' ? currentName : '소융대') + ' 교수님 🎓';
+  document.title = (typeof currentName !== 'undefined' ? currentName : '소융대') + ' 교수님의 대학원 진학!';
 }
 
 const shopCategories = [
   { id: 'toilet', name: '🚽 변기', },
   { id: 'gpu', name: '🐺 GPU 게임', },
   { id: 'combo', name: '💥 콤보', },
+  { id: 'respect', name: '🙇 교수존경', },
   { id: 'special', name: '⭐ 특수', },
 ];
 
@@ -62,6 +97,11 @@ const shopItems = [
       { price: 150, bonus: 3, desc: 'Lv3: 콤보당 +3 DLPC 토큰' },
     ]
   },
+  { id: 'prof_hat', icon: '🎓', name: '학사모', desc: '교수님께 학사모를 씌워드려요!', price: 8, category: 'respect', effect: 'prof_hat', owned: false, active: false, togglable: true },
+  { id: 'prof_flower', icon: '💐', name: '꽃다발', desc: '교수님께 바치는 꽃다발!', price: 12, category: 'respect', effect: 'prof_flower', owned: false, active: false, togglable: true },
+  { id: 'prof_crown', icon: '👑', name: '왕관', desc: '교수님은 우리의 왕!', price: 20, category: 'respect', effect: 'prof_crown', owned: false, active: false, togglable: true },
+  { id: 'prof_heart', icon: '💖', name: '하트 오라', desc: '교수님을 향한 사랑의 오라!', price: 25, category: 'respect', effect: 'prof_heart', owned: false, active: false, togglable: true },
+  { id: 'prof_sparkle', icon: '✨', name: '반짝이 효과', desc: '교수님이 반짝반짝 빛나요!', price: 30, category: 'respect', effect: 'prof_sparkle', owned: false, active: false, togglable: true },
   { id: 'dlpc_booster', icon: '🔥', name: 'DLPC 부스터', desc: '모든 DLPC 토큰 획득량 2배!', price: 50, category: 'special', effect: 'booster', owned: false },
 ];
 
@@ -306,6 +346,57 @@ function applyItemEffect(item, enable) {
     } else {
       if (comboBarContainer) comboBarContainer.style.display = 'none';
     }
+  } else if (item.effect === 'prof_hat') {
+    item.owned = true;
+    toggleProfessorAccessory('prof_hat', '🎓', 'professor-hat', enable);
+  } else if (item.effect === 'prof_flower') {
+    item.owned = true;
+    toggleProfessorAccessory('prof_flower', '💐', 'professor-flower', enable);
+  } else if (item.effect === 'prof_crown') {
+    item.owned = true;
+    toggleProfessorAccessory('prof_crown', '👑', 'professor-crown', enable);
+  } else if (item.effect === 'prof_heart') {
+    item.owned = true;
+    toggleProfessorAccessory('prof_heart', '💖', 'professor-heart', enable);
+  } else if (item.effect === 'prof_sparkle') {
+    item.owned = true;
+    const professor = document.getElementById('professor');
+    if (!professor) return;
+    const existing = professor.querySelectorAll('[data-accessory="prof_sparkle"]');
+    if (enable !== false) {
+      if (existing.length === 0) {
+        const positions = [{top:'-10px',left:'10%'}, {top:'5px',left:'80%'}, {top:'-15px',left:'55%'}];
+        positions.forEach((pos, i) => {
+          const el = document.createElement('span');
+          el.className = 'professor-accessory professor-sparkle';
+          el.setAttribute('data-accessory', 'prof_sparkle');
+          el.textContent = '✨';
+          el.style.top = pos.top;
+          el.style.left = pos.left;
+          el.style.animationDelay = (i * 0.5) + 's';
+          professor.appendChild(el);
+        });
+      }
+    } else {
+      existing.forEach(el => el.remove());
+    }
+  }
+}
+
+function toggleProfessorAccessory(effectId, emoji, cssClass, enable) {
+  const professor = document.getElementById('professor');
+  if (!professor) return;
+  const existing = professor.querySelector('[data-accessory="' + effectId + '"]');
+  if (enable !== false) {
+    if (!existing) {
+      const el = document.createElement('span');
+      el.className = 'professor-accessory ' + cssClass;
+      el.setAttribute('data-accessory', effectId);
+      el.textContent = emoji;
+      professor.appendChild(el);
+    }
+  } else {
+    if (existing) existing.remove();
   }
 }
 
@@ -352,6 +443,8 @@ function applyLoadedEffects() {
 
 loadSaveData();
 
+if (endingTriggered) enterPostEnding();
+
 document.getElementById('shopBtn').addEventListener('click', () => {
   renderShop();
   document.getElementById('shopModal').classList.add('show');
@@ -379,6 +472,18 @@ function resetAllGame() {
   localStorage.removeItem('shopOwned');
   localStorage.removeItem('shopActive');
   localStorage.removeItem('shopLevels');
+  localStorage.removeItem('endingTriggered');
+  localStorage.removeItem('flushCount');
+  localStorage.removeItem('bestFlush');
+  localStorage.removeItem('bestCombo');
+  localStorage.removeItem('gpuScoreVal');
+  endingTriggered = false;
+  const toilet = document.getElementById('toilet');
+  const hint = document.querySelector('.tap-hint');
+  const gradSchool = document.getElementById('gradSchool');
+  if (toilet) toilet.style.display = '';
+  if (hint) hint.style.display = '';
+  if (gradSchool) { gradSchool.style.display = 'none'; gradSchool.classList.remove('ending-burst'); }
   if (typeof resetToiletGame === 'function') resetToiletGame();
   if (typeof resetGpuGame === 'function') resetGpuGame();
   applyLoadedEffects();
@@ -400,3 +505,16 @@ document.getElementById('resetConfirmModal').addEventListener('click', (e) => {
     document.getElementById('resetConfirmModal').classList.remove('show');
   }
 });
+
+document.getElementById('endingContinueBtn').addEventListener('click', () => {
+  document.getElementById('endingModal').classList.remove('show');
+  enterPostEnding();
+});
+document.getElementById('endingModal').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('endingModal')) {
+    document.getElementById('endingModal').classList.remove('show');
+    enterPostEnding();
+  }
+});
+
+document.getElementById('gradSchool').addEventListener('click', showEnding);

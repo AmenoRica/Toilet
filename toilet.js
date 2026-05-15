@@ -21,22 +21,23 @@ const comboDisplay = document.getElementById('comboDisplay');
 const comboBar = document.getElementById('comboBar');
 
 let currentName = localStorage.getItem('profName') || '소융대';
-let score = 0, best = 0, isFlushing = false;
+let score = parseInt(localStorage.getItem('flushCount')) || 0, best = parseInt(localStorage.getItem('bestFlush')) || 0, isFlushing = false;
 let autoMode = false, autoTimer = null, autoInterval = 3000;
 let autoFlushMode = false, autoFlushTimer = null, autoFlushOwned = false;
-let combo = 0, bestCombo = 0, comboTimer = null;
+let combo = 0, bestCombo = parseInt(localStorage.getItem('bestCombo')) || 0, comboTimer = null;
 const COMBO_TIMEOUT = 3000;
 
 const comboMsgs = [
-  "싸악~ 🌊", "잘 가요 교수님! 👋", "꼬르륵~ 🌀",
-  "물 아껴주세요!", "푸우웅~", "교수님 안녕! 😱",
-  "소용돌이!!! 🌪️", "냄새 날라도 괜찮아? 😷",
-  "급행 열차 출발~ 🚄", "다음 역: 하수구 🚇",
+  "싸악~ 🌊", "교수님 최고! 👋", "꼬르륵~ 🌀",
+  "교수님 사랑해요! 💕", "푸우웅~", "교수님 화이팅! 💪",
+  "소용돌이!!! 🌪️", "교수님 존경합니다! 🙇",
+  "교수님 사랑해요 <3", "교수님 제 마음 아시죠?",
+  "급행 열차 출발~ 🚄", "교수님 응원합니다! 🎉",
 ];
 const comboSpecials = [
   "", "", "🔥 더블!", "🔥 트리플!!",
   "🔥 쿼드!!", "🔥 펜타!!", "🔥 헥사!!!",
-  "🔥 미친 콤보!!!!", "🔥 초강력!!!!!", "🔥 전설!!!!!!",
+  "🙌 교수님 콤보!!!!", "❤️ 존경 콤보!!!!!", "✨ 전설!!!!!!",
 ];
 
 function hasComboDisplay() {
@@ -61,8 +62,6 @@ confirmBtn.addEventListener('click', () => {
     profNameEl.textContent = currentName;
     titleName.textContent = currentName + ' 교수님';
 document.title = currentName + ' 교수님을 변기에 넣고 내려!';
-profNameEl.textContent = currentName;
-titleName.textContent = currentName + ' 교수님';
     localStorage.setItem('profName', currentName);
     if (typeof gpuPlayer !== 'undefined') gpuPlayer.targetName = currentName;
   }
@@ -155,6 +154,9 @@ function flush() {
   score++;
   scoreEl.textContent = score;
   if (score > best) { best = score; bestEl.textContent = best; }
+  localStorage.setItem('flushCount', score);
+  localStorage.setItem('bestFlush', best);
+  localStorage.setItem('bestCombo', bestCombo);
   let dlpcReward = 1;
   if (hasComboBonus()) dlpcReward += getComboBonus() * combo;
   if (getTurboBonus() > 0) dlpcReward += getTurboBonus();
@@ -207,15 +209,21 @@ document.addEventListener('keydown', (e) => {
 if (typeof applyLoadedEffects === 'function') applyLoadedEffects();
 
 document.title = currentName + ' 교수님을 변기에 넣고 내려!';
-
-function resetToiletGame() {
-  currentName = '소융대';
-  profNameEl.textContent = currentName;
-  titleName.textContent = currentName + ' 교수님';
-  document.title = currentName + ' 교수님을 변기에 넣고 내려!';
+profNameEl.textContent = currentName;
+titleName.textContent = currentName + ' 교수님';
+scoreEl.textContent = score;
+bestEl.textContent = best;
+if (hasComboDisplay()) {
+  comboCountEl.textContent = combo;
+  bestComboEl.textContent = bestCombo;
+}
+document.title = currentName + ' 교수님을 변기에 넣고 내려!';
   if (typeof gpuPlayer !== 'undefined') gpuPlayer.targetName = currentName;
   localStorage.removeItem('profName');
   score = 0; best = 0; combo = 0; bestCombo = 0;
+  localStorage.removeItem('flushCount');
+  localStorage.removeItem('bestFlush');
+  localStorage.removeItem('bestCombo');
   scoreEl.textContent = 0; bestEl.textContent = 0;
   autoMode = false; autoFlushMode = false;
   autoInterval = 3000;
