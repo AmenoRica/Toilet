@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>변기 Flush & 늑대GPU 도둑</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="dlpc-bar">
+  <span class="dlpc-icon">🪙</span>
+  <span>국민대학교 DLPC 토큰:</span>
+  <span class="dlpc-amount" id="dlpcAmount">0</span>
+  <span>DLPC 토큰</span>
+  <button class="shop-btn" id="shopBtn">🛒 상점</button>
+  <button class="reset-game-btn" id="resetGameBtn">🗑️ 리셋</button>
+</div>
+<div class="dlpc-gain" id="dlpcGain"></div>
+
+<div class="game-section">
+<div class="game-container">
+  <h1 id="title"><span id="titleName">소융대 교수님</span>을 변기에 넣고 내려!</h1>
+  <div class="score-board">내린 횟수: <span id="score">0</span> | 최고: <span id="best">0</span><span id="comboScoreSection" style="display:none"> | 콤보: <span id="comboCount">0</span> | 최고 콤보: <span id="bestCombo">0</span></span></div>
+  <div class="toilet" id="toilet">
+    <div class="toilet-tank">
+      <div class="flush-btn-icon"></div>
+      <div class="handle"></div>
+    </div>
+    <div class="toilet-rim"></div>
+    <div class="toilet-bowl" id="bowl">
+      <div class="water" id="water"></div>
+      <div class="whirlpool" id="whirlpool"></div>
+      <div class="professor" id="professor">
+        🧑‍🏫
+        <div class="professor-name">소융대</div>
+      </div>
+    </div>
+  </div>
+  <div class="tap-hint">변기를 클릭하세요!</div>
+  <div class="combo-display" id="comboDisplay" style="display:none"></div>
+  <div class="message" id="message"></div>
+  <div class="combo-bar-container" style="display:none"><div class="combo-bar" id="comboBar"></div></div>
+  <div>
+    <button class="reset-btn" id="resetBtn">다시 넣기</button>
+    <button class="change-btn" id="changeBtn">교수 변경</button>
+    <button class="auto-btn" id="autoBtn">🔄 자동 넣기</button>
+    <button class="auto-flush-btn" id="autoFlushBtn" title="상점에서 구매 필요">🔒 자동 내리기 (🔒)</button>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<div class="game-section">
+<div class="gpu-game-container">
+  <h2 class="gpu-title">🐢 국민대 미래관에서 늑대GPU 훔치기</h2>
+  <div class="gpu-hud">
+    <span>레벨: <span id="gpuLevel">1</span></span>
+    <span>목숨: <span id="gpuLives">❤️❤️❤️</span></span>
+    <span>점수: <span id="gpuScore">0</span></span>
+    <span>🪙 <span id="gpuDlpc">0</span> DLPC 토큰</span>
+  </div>
+  <div class="gpu-canvas-wrapper">
+    <canvas id="gpuCanvas" width="760" height="480"></canvas>
+  </div>
+  <div class="gpu-info">방향키 / WASD 이동 | 경비 🔴 피해서 늑대GPU 🐢 훔쳐 교수님 🧑‍🏫 에게 배달!</div>
+  <br>
+  <button class="gpu-start-btn" id="gpuStartBtn">🎮 미래관 침투 시작!</button>
+</div>
+</div>
+
+<div class="modal-overlay" id="resetConfirmModal">
+    <div class="modal">
+      <h2>⚠️ 게임 리셋</h2>
+      <p style="color:#ff6b6b;margin:10px 0;font-size:0.95rem;">모든 진행상황이 삭제됩니다!<br>DLPC 토큰, 상점 구매, 기록 등</p>
+      <div class="modal-buttons">
+        <button class="modal-btn confirm" id="resetConfirmYes">리셋</button>
+        <button class="modal-btn cancel" id="resetConfirmNo">취소</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal">
+  <div class="modal">
+    <h2>🎓 교수 변경</h2>
+    <input type="text" id="nameInput" placeholder="교수 이름 입력" maxlength="10">
+    <div class="modal-buttons">
+      <button class="modal-btn confirm" id="confirmBtn">확인</button>
+      <button class="modal-btn cancel" id="cancelBtn">취소</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="shopModal">
+  <div class="shop-modal">
+    <h2>🛒 DLPC 토큰 상점</h2>
+    <div class="shop-balance">보유: <span id="shopBalance">0</span> DLPC 토큰</div>
+    <button class="shop-close" id="shopClose">✕ 닫기</button>
+    <div class="shop-scroll">
+      <div class="shop-tabs" id="shopTabs"></div>
+      <div class="shop-grid" id="shopGrid"></div>
+    </div>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script src="toilet.js"></script>
+<script src="gpu.js"></script>
+</body>
+</html>
